@@ -28,7 +28,10 @@ class RegisterView(View):
             user= form.save()
             login(request, user)
             return redirect('register')
-        return render(request, 'register.html', {'form': form})
+        return render(request, 'register.html', {'form':form})
+       
+
+
             
 
     

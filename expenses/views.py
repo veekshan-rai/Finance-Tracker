@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from expenses.forms import RegisterForm
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
 #Function Based View
 
 # def home(request):
@@ -27,9 +28,12 @@ class RegisterView(View):
         if form.is_valid():
             user= form.save()
             login(request, user)
-            return redirect('register')
+            return redirect('home')
         return render(request, 'register.html', {'form':form})
        
+class DashBoard(LoginRequiredMixin, View): # Mixin writen first
+    def get(self, request, *args, **kwargs):
+        return render(request, 'home.html')
 
 
             

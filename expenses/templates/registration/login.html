@@ -2,20 +2,20 @@
 {% block title %}Login{% endblock title %}
 {% block content %}
 
-<div class="min-h-screen flex items-center justify-center bg-gray-100  py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-[0_35px_35px_rgba(0,0,0,0.12)]">
+<div class="min-h-screen flex items-center justify-center bg-gray-200  py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-gray-500 p-8 rounded-xl shadow-[0_35px_35px_rgba(0,0,0,0.12)]">
         <div>
             <h2 class="text-3xl font-bold text-yellow-400 text-center">Finance Tracker</h2>
-            <p class="mt-2 text-center text-gray-400 text-sm">Please sign in to your account</p>
+            <p class="mt-2 text-center text-gray-200 text-sm">Please sign in to your account</p>
         </div>
         <form class="space-y-5" method="post">
             {% csrf_token %}
             <div>
-                <label for="id_username" class="block text-gray-500  mb-2 font-bold">
+                <label for="id_username" class="block text-gray-400  mb-2 font-bold">
                     UserName:
                 </label>
                 <input type="text" name="username" id="id_username"
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-indigo-500"
+                    class="w-full text-gray-900 p-3 border rounded-lg focus:outline-none focus:ring-indigo-500"
                     placeholder="Enter your Username" required>
             </div>
 
@@ -24,7 +24,7 @@
                 <label for="id_password" class="block text-gray-500  mb-2 font-bold">
                 </label>
                 <input type="password" name="password" id="id_password"
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-indigo-500"
+                    class="w-full p-3 text-gray-900 border rounded-lg focus:outline-none focus:ring-indigo-500"
                     placeholder="Enter your Password" required>
             </div>
 
@@ -42,6 +42,17 @@
             </div>
 
         </form>
+        <div class="text-center ">
+            <p class="text-medium text-yellow-300">Don't have an account?
+            <a href="{% url 'register' %}"
+                class="text-sm text-black hover:text-indigo-600 transition duration-150 ease-in-out hover:underline ">Register Here</a>
+              </p>
+
+              <p class="text-medium text-yellow-300"> 
+                <a href="{% url 'password_reset' %}" class="text-medium font-semibold text-indigo-800 hover:text-indigo-300 transtion duretion-150 ease-in-out">Forget Password</a>
+
+              </p>
+        </div>
     </div>
 </div>
 {% endblock content %}

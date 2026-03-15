@@ -11,9 +11,12 @@
 <body class="bg-gray-300 text-white">
    <nav class="bg-yellow-500 p-4 text-white">
     {% if user.is_authenticated %}
+    <a class="font-semibold mx-10" href="{% url 'home' %}">Home</a>
+    <a class="font-semibold mx-4" href="{% url 'transactions_add' %}">Add Transaction</a>
+    
     <form id= "logout-form" action="{% url 'logout' %}" method="post" style="display: inline;">
         {% csrf_token %}
-        <a href="#" onclick="document.getElementById('logout-form').submit();" class="ml-2 font-bold">Logout</a>
+        <a href="#" onclick="document.getElementById('logout-form').submit();" class="ml-2 font-semibold">Logout</a>
     </form>
     {% else %}
     <a href="{% url 'login' %}" class="ml-4 font-bold">Login</a>

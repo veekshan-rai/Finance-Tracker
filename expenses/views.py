@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect 
 from django.views import View
-from expenses.forms import RegisterForm
+from expenses.forms import RegisterForm, TransactionForm
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 #Function Based View
@@ -34,6 +34,33 @@ class RegisterView(View):
 class DashBoard(LoginRequiredMixin, View): # Mixin writen first
     def get(self, request, *args, **kwargs):
         return render(request, 'home.html')
+    
+class Transactions(LoginRequiredMixin,View):
+    def get(self, request, *args, **kwargs):
+        form = TransactionForm()
+        return render(request, 'transaction_form.html', {'form':form})
+
+    def post(self, request, *args, **kwargs):
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            transaction = form.save(commit=False)
+            transaction.user = request.user
+            transaction.save()
+            return redirect('home')
+        return render(request, 'transaction_form.html', {'form':form})
+    
+
+    
+
+
+
+            
+    
+  
+
+    
+
+
 
 
             

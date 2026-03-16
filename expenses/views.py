@@ -3,6 +3,7 @@ from django.views import View
 from expenses.forms import RegisterForm, TransactionForm
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Transaction
 #Function Based View
 
 # def home(request):
@@ -48,6 +49,15 @@ class Transactions(LoginRequiredMixin,View):
             transaction.save()
             return redirect('home')
         return render(request, 'transaction_form.html', {'form':form})
+    
+class TransactionView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+       trans = Transaction.objects.all()
+       return render(request, 'transaction_list.html', {'trans':trans})
+
+    
+
+    
     
 
     

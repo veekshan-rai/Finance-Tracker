@@ -18,3 +18,15 @@ class Transaction(models.Model):
     def __str__(self):
         return self.title
 
+class Goals(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    target_amount = models.DecimalField( max_digits=10, decimal_places=2)
+    deadline = models.DateField()
+    class Meta:
+        verbose_name_plural = "Goals" # adding this if it is not there in admin panel it shows like Goalss like thet so we can create this
+        
+
+    def __str__(self):
+        return self.user
+

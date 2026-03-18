@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect 
 from django.views import View
-from expenses.forms import RegisterForm, TransactionForm
+from expenses.forms import RegisterForm, TransactionForm, GoalForm
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Transaction
+from .models import Transaction, Goals
 #Function Based View
 
 # def home(request):
@@ -54,6 +54,17 @@ class TransactionView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
        trans = Transaction.objects.all()
        return render(request, 'transaction_list.html', {'trans':trans})
+    
+class GoalCreateView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        form = GoalForm()
+        return render(request, 'goal_form.html', {'form':form})
+    
+    # def post(self, request, *args, **kwargs):
+    #     form = GoalForm(request.POST)
+    #     if form.is_valid():
+    #         form.save()
+
 
     
 

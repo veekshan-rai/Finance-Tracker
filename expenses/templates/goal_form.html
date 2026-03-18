@@ -4,18 +4,18 @@
  <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8 bg-white p-6 rounded-xl shadow-lg ">
         <div>
-            <h1 class="text-2xl text-center font-bold text-yellow-500 ">Add New Transaction</h1>
+            <h1 class="text-2xl text-center font-bold text-yellow-500 ">Goals</h1>
 
             <form class="space-y-6" method="post">
         {% csrf_token %}
         <div>
             <label for="names" class="block text-gray-400  mb-2 font-bold">
-                Name:
+                Goal Name
             </label>
-            <input type="text" name="names" id="names" maxlength="100"
+            <input type="text" name="name" id="names" maxlength="100"
                 class="appearance-none text-black w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-200 focus:ring-2 focus:ring-yellow-200"
                 placeholder="Enter the name" required>
-            {% if form.name.errors %}
+                {% if form.name.errors %}
             <p class="text-red-500 text-sm mt-1">
                 {{ form.name.errors.0 }}
             </p>

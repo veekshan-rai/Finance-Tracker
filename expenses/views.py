@@ -60,11 +60,14 @@ class GoalCreateView(LoginRequiredMixin, View):
         form = GoalForm()
         return render(request, 'goal_form.html', {'form':form})
     
-    # def post(self, request, *args, **kwargs):
-    #     form = GoalForm(request.POST)
-    #     if form.is_valid():
-    #         form.save()
-
+    def post(self, request, *args, **kwargs):
+        form = GoalForm(request.POST)
+        if form.is_valid():
+            goal = form.save(commit=False)
+            goal.user = request.user
+            goal.save()
+            return redirect('home')
+        return render(request, 'goal_form.html', {'form':form})
 
     
 

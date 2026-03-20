@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-300 text-white">
+<body class="bg-gray-100 text-white">
    <nav class="bg-yellow-500 p-4 text-white">
     {% if user.is_authenticated %}
     <a class="font-semibold mx-10" href="{% url 'home' %}">Home</a>
@@ -27,7 +27,8 @@
     {% endif %}
 
    </nav>
-    {% block content %}{% endblock content %}
+    {% block content %}
+    {% endblock content %}
 </body>
 
 </html>

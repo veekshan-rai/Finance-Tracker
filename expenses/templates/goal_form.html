@@ -35,22 +35,6 @@
             </p>
             {% endif %}
         </div>
-
-
-         <div>
-            <label for="current_amount" class="block text-gray-400  mb-2 font-bold">
-                Current Amount
-            </label>
-            <input type="number" name="current_amount" id="current_amount"  step="0.01" min="0.01"
-                class="appearance-none text-black w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-200 focus:ring-2 focus:ring-yellow-200"
-                placeholder="e.g., 0.00" required>
-            {% if form.current_amount.errors %}
-            <p class="text-red-500 text-sm mt-1">
-                {{ form.current_amount.0 }}
-            </p>
-            {% endif %}
-        </div>
-
           <div>
             <label for="deadline" class="block text-gray-400  mb-2 font-bold">
                 Deadline

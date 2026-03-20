@@ -4,6 +4,7 @@ from expenses.forms import RegisterForm, TransactionForm, GoalForm
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Transaction, Goals
+from django.db.models import Sum
 #Function Based View
 
 # def home(request):
@@ -34,7 +35,37 @@ class RegisterView(View):
        
 class DashBoard(LoginRequiredMixin, View): # Mixin writen first
     def get(self, request, *args, **kwargs):
-        return render(request, 'home.html')
+        trans = Transaction.objects.filter(user = request.user)
+        goals = Goals.objects.filter(user = request.user)
+
+        # Calculate Income and Expenses
+        total_income = Transaction.objects.filter(user = request.user, transaction_type = 'Income').aggregate(Sum('amount'))['amount__sum'] or 0
+
+        total_expenses = Transaction.objects.filter(user = request.user, transaction_type = 'Expense').aggregate(Sum('amount'))['amount__sum'] or 0
+
+        net_saving = total_income - total_expenses
+        
+        remaining_saving = net_saving
+        goal_progress = []
+        for goal in goals:
+            if remaining_saving >= goal.target_amount:
+                goal_progress.append({'goal': goal, 'progress': 100})
+                remaining_saving -= goal.target_amount
+            elif remaining_saving > 0:
+                progress = (remaining_saving / goal.target_amount) * 100
+                goal_progress.append({'goal': goal, 'progress': progress})
+                remaining_saving = 0
+            else:
+                goal_progress.append({'goal': goal, 'progress': 0})
+
+        context = {
+            'trans': trans,
+             'total_income': total_income,
+             'total_expenses': total_expenses,
+             'net_saving': net_saving,
+             'goal_progress': goal_progress,
+        }
+        return render(request, 'home.html', context)
     
 class Transactions(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):

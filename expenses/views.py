@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect 
+from django.shortcuts import render, redirect, HttpResponse
 from django.views import View
 from expenses.forms import RegisterForm, TransactionForm, GoalForm
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Transaction, Goals
 from django.db.models import Sum
+from .admin import TransactionResource
+from django.contrib import messages
 #Function Based View
 
 # def home(request):
@@ -30,6 +32,7 @@ class RegisterView(View):
         if form.is_valid():
             user= form.save()
             login(request, user)
+            messages.success(request, 'Account created succsessfully!')
             return redirect('home')
         return render(request, 'register.html', {'form':form})
        
@@ -42,8 +45,13 @@ class DashBoard(LoginRequiredMixin, View): # Mixin writen first
         total_income = Transaction.objects.filter(user = request.user, transaction_type = 'Income').aggregate(Sum('amount'))['amount__sum'] or 0
 
         total_expenses = Transaction.objects.filter(user = request.user, transaction_type = 'Expense').aggregate(Sum('amount'))['amount__sum'] or 0
-
-        net_saving = total_income - total_expenses
+        
+        savings = total_income - total_expenses
+        if savings > 0:
+            net_saving = savings
+        else:
+            net_saving = 0
+        
         
         remaining_saving = net_saving
         goal_progress = []
@@ -78,12 +86,13 @@ class Transactions(LoginRequiredMixin,View):
             transaction = form.save(commit=False)
             transaction.user = request.user
             transaction.save()
+            messages.success(request, 'Transaction added successfully!')
             return redirect('home')
         return render(request, 'transaction_form.html', {'form':form})
     
 class TransactionView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-       trans = Transaction.objects.all()
+       trans = Transaction.objects.filter(user = request.user)
        return render(request, 'transaction_list.html', {'trans':trans})
     
 class GoalCreateView(LoginRequiredMixin, View):
@@ -97,10 +106,24 @@ class GoalCreateView(LoginRequiredMixin, View):
             goal = form.save(commit=False)
             goal.user = request.user
             goal.save()
+            messages.success(request, 'Goal added successfully!')
             return redirect('home')
         return render(request, 'goal_form.html', {'form':form})
-
+def export_transactions(request):
+    user_transactions = Transaction.objects.filter(user = request.user)
     
+    transaction_resource = TransactionResource()
+    dataSet = transaction_resource.export(queryset=user_transactions)
+
+    excel_data = dataSet.export('xlsx')
+
+    # create  an HTTP Response with the correct MIME type for excel file 
+    response = HttpResponse(excel_data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+    # set the header for downloading the file 
+    response['Content-Disposition'] = 'attachment; filename=transactions_report.xlsx'
+    return response
+
 
     
     

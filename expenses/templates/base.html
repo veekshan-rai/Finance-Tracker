@@ -9,26 +9,69 @@
 </head>
 
 <body class="bg-gray-100 text-white">
-   <nav class="bg-yellow-500 p-4 text-white">
-    {% if user.is_authenticated %}
-    <a class="font-semibold mx-10" href="{% url 'home' %}">Home</a>
-    <a class="font-semibold mx-4" href="{% url 'transactions_add' %}">Add Transaction</a>
-     <a class="font-semibold mx-4" href="{% url 'goals' %}">Feature Goals</a>
-    <a class="font-semibold mx-4" href="{% url 'transaction_list' %}">Transactions</a>
+    <nav class="bg-yellow-500 p-4 text-white">
+        {% if user.is_authenticated %}
+        <a class="font-semibold mx-10" href="{% url 'home' %}">Home</a>
+        <a class="font-semibold mx-4" href="{% url 'transactions_add' %}">Add Transaction</a>
+        <a class="font-semibold mx-4" href="{% url 'goals' %}">Feature Goals</a>
+        <a class="font-semibold mx-4" href="{% url 'transaction_list' %}">Transactions</a>
 
-    
-    <form id= "logout-form" action="{% url 'logout' %}" method="post" style="display: inline;">
-        {% csrf_token %}
-        <a href="#" onclick="document.getElementById('logout-form').submit();" class="ml-2 font-semibold">Logout</a>
-    </form>
-    {% else %}
-    <a href="{% url 'login' %}" class="ml-4 font-bold">Login</a>
-    <a href="{% url 'register' %}" class="ml-4 font-bold">Register</a>
-    {% endif %}
 
-   </nav>
+        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <a href="#" onclick="document.getElementById('logout-form').submit();" class="ml-2 font-semibold">Logout</a>
+        </form>
+        {% else %}
+        <a href="{% url 'login' %}" class="ml-4 font-bold">Login</a>
+        <a href="{% url 'register' %}" class="ml-4 font-bold">Register</a>
+        {% endif %}
+
+    </nav>
     {% block content %}
     {% endblock content %}
+    {% if messages %}
+    <div id="message-container" class="fixed top-5 left-1/2 transform -translate-x-1/2 w-96 z-50 space-y-2">
+
+        {% for message in messages %}
+        <div class="message-item 
+        bg-gray-600
+                bg-{{ message.tags }}-500 
+                text-white p-3 rounded shadow-md
+                opacity-0 -translate-y-5
+                transition-all duration-500 ease-out">
+            Message: {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+    <script>
+        // Animate IN
+        window.onload = () => {
+            const messages = document.querySelectorAll('.message-item');
+            messages.forEach((msg, index) => {
+                setTimeout(() => {
+                    msg.classList.remove('opacity-0', '-translate-y-5');
+                    msg.classList.add('opacity-100', 'translate-y-0');
+                }, index * 150); // slight stagger effect
+            });
+        };
+
+        // Animate OUT after 5 sec
+        setTimeout(() => {
+            const messages = document.querySelectorAll('.message-item');
+            messages.forEach((msg) => {
+                msg.classList.remove('opacity-100', 'translate-y-0');
+                msg.classList.add('opacity-0', '-translate-y-5');
+            });
+
+            setTimeout(() => {
+                document.getElementById('message-container')?.remove();
+            }, 500);
+        }, 5000);
+    </script>
+
 </body>
 
 </html>

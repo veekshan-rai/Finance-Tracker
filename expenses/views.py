@@ -7,6 +7,8 @@ from .models import Transaction, Goals
 from django.db.models import Sum
 from .admin import TransactionResource
 from django.contrib import messages
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
 #Function Based View
 
 # def home(request):
@@ -123,6 +125,16 @@ def export_transactions(request):
     # set the header for downloading the file 
     response['Content-Disposition'] = 'attachment; filename=transactions_report.xlsx'
     return response
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'registration/password_reset_forms.html'
+    success_url = reverse_lazy('password_reset') # stay oon the same page 
+
+    def form_valid(self, form):
+        messages.success(self.request, "Reset link sent! Check your email.")
+        return super().form_valid(form)
+
+
 
 
     

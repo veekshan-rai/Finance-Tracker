@@ -43,7 +43,6 @@ urlpatterns = [
    # step-3 Reset Link Page
    path('reset/<uidb64>/<token>/', CustomPasswordResetConfirm.as_view(template_name='registration/password_reset_confirms.html'), name='password_reset_confirm'),
   
-  #password reset complete
 
 
 ]

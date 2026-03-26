@@ -21,7 +21,7 @@ from django.urls import reverse_lazy
 
 # class HomeView(View):
 #     def get(sef, request, *args, **kwargs):
-#         return render(request, 'home.html')
+#         return render(request, 'home.html').
 
 class RegisterView(View):
     def get(self, request, *args, **kwargs):

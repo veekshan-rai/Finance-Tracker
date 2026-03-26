@@ -7,7 +7,7 @@ from .models import Transaction, Goals
 from django.db.models import Sum
 from .admin import TransactionResource
 from django.contrib import messages
-from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.views import PasswordResetView,PasswordResetConfirmView
 from django.urls import reverse_lazy
 #Function Based View
 
@@ -111,6 +111,8 @@ class GoalCreateView(LoginRequiredMixin, View):
             messages.success(request, 'Goal added successfully!')
             return redirect('home')
         return render(request, 'goal_form.html', {'form':form})
+    
+
 def export_transactions(request):
     user_transactions = Transaction.objects.filter(user = request.user)
     
@@ -128,11 +130,21 @@ def export_transactions(request):
 
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'registration/password_reset_forms.html'
-    success_url = reverse_lazy('password_reset') # stay oon the same page 
+    success_url = reverse_lazy('login') # go to login page and message appears there
 
     def form_valid(self, form):
         messages.success(self.request, "Reset link sent! Check your email.")
         return super().form_valid(form)
+
+class CustomPasswordResetConfirm(PasswordResetConfirmView):
+    template_name = 'register/password_reset_confirm.html'
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        messages.success(self.request, "Password reset successfully done!")
+        return super().form_valid(form)
+    
+    
 
 
 

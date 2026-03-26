@@ -3,7 +3,7 @@ from django.urls import path
 # from expenses.views import home
 # from . import views
 # from expenses.views import HomeView
-from expenses.views import RegisterView, DashBoard, Transactions, TransactionView, GoalCreateView, export_transactions, CustomPasswordResetView
+from expenses.views import RegisterView, DashBoard, Transactions, TransactionView, GoalCreateView, export_transactions, CustomPasswordResetView, CustomPasswordResetConfirm
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 
@@ -41,10 +41,10 @@ urlpatterns = [
    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
 
    # step-3 Reset Link Page
-   path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+   path('reset/<uidb64>/<token>/', CustomPasswordResetConfirm.as_view(template_name='registration/password_reset_confirms.html'), name='password_reset_confirm'),
   
   #password reset complete
-   path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
 
 ]
 

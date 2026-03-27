@@ -1,9 +1,9 @@
 
 from django.urls import path
 # from expenses.views import home
-# from . import views
+from . import views
 # from expenses.views import HomeView
-from expenses.views import RegisterView, DashBoard, Transactions, TransactionView, GoalCreateView, export_transactions, CustomPasswordResetView, CustomPasswordResetConfirm
+from expenses.views import RegisterView, DashBoard, Transactions, TransactionView, GoalCreateView, export_transactions, CustomPasswordResetView, CustomPasswordResetConfirm, clear_transactions, clear_goals, delete_goal
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 
@@ -16,6 +16,14 @@ urlpatterns = [
    path("transaction/list/", TransactionView.as_view(), name="transaction_list"),
    path("goals/", GoalCreateView.as_view(), name='goals'),
    path('generate_report/', export_transactions, name='exports'),
+   #clear transaction list
+    path('clear/transactions/', views.clear_transactions, name='clear_transactions'),
+# clear Goals
+   path('clear/goals/', views.clear_goals, name='clear_goals'),
+
+#delete Goals one by one 
+ path('goal/delete/<int:id>/', views.delete_goal, name ='delete_goal'),
+
 
     # ✅ LOGIN PAGE
     path(
@@ -28,7 +36,7 @@ urlpatterns = [
 
     # ✅ LOGOUT PAGE
     path(
-        'account/logout/',
+        'accounts/logout/',
         auth_views.LogoutView.as_view(),
         name='logout'
     ),

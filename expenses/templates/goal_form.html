@@ -1,64 +1,97 @@
 {% extends "base.html" %}
 {% block title %}Goals{% endblock title %}
 {% block content %}
- <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8 bg-white p-6 rounded-xl shadow-lg ">
-        <div>
-            <h1 class="text-2xl text-center font-bold text-yellow-500 ">Goals</h1>
+ <div class="min-h-screen flex items-center justify-center 
+            bg-gradient-to-br from-gray-900 via-gray-800 to-black 
+            py-12 px-4">
 
-            <form class="space-y-6" method="post">
-        {% csrf_token %}
-        <div>
-            <label for="names" class="block text-gray-400  mb-2 font-bold">
-                Goal Name
-            </label>
-            <input type="text" name="name" id="names" maxlength="100"
-                class="appearance-none text-black w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-200 focus:ring-2 focus:ring-yellow-200"
-                placeholder="Enter the name" required>
+    <!-- Glass Card -->
+    <div class="max-w-md w-full 
+                bg-white/10 backdrop-blur-lg 
+                p-8 rounded-2xl shadow-2xl 
+                border border-white/20
+                transition duration-500 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+
+        <!-- Title -->
+        <div class="text-center mb-6">
+            <h1 class="text-3xl font-extrabold text-yellow-400 animate-pulse">
+                Goals 
+            </h1>
+            <p class="text-gray-300 text-sm mt-1">
+                Set your financial target
+            </p>
+        </div>
+
+        <!-- Form -->
+        <form class="space-y-5" method="post">
+            {% csrf_token %}
+
+            <!-- Goal Name -->
+            <div>
+                <label class="text-gray-300 font-semibold text-sm">Goal Name</label>
+                <input type="text" name="name"
+                    class="w-full mt-1 p-3 rounded-lg bg-white/80 text-black 
+                           focus:outline-none focus:ring-2 focus:ring-yellow-400 
+                           transition duration-300 focus:scale-[1.02]"
+                    placeholder="Buy a bike, Save for trip..." required>
+
                 {% if form.name.errors %}
-            <p class="text-red-500 text-sm mt-1">
-                {{ form.name.errors.0 }}
-            </p>
-            {% endif %}
+                <p class="text-red-400 text-sm mt-1">
+                    {{ form.name.errors.0 }}
+                </p>
+                {% endif %}
+            </div>
+
+            <!-- Target Amount -->
+            <div>
+                <label class="text-gray-300 font-semibold text-sm">Target Amount</label>
+                <input type="number" name="target_amount" step="0.01" min="0.01"
+                    class="w-full mt-1 p-3 rounded-lg bg-white/80 text-black 
+                           focus:outline-none focus:ring-2 focus:ring-yellow-400 
+                           transition duration-300 focus:scale-[1.02]"
+                    placeholder="5000.00" required>
+
+                {% if form.target_amount.errors %}
+                <p class="text-red-400 text-sm mt-1">
+                    {{ form.target_amount.errors.0 }}
+                </p>
+                {% endif %}
+            </div>
+
+            <!-- Deadline -->
+            <div>
+                <label class="text-gray-300 font-semibold text-sm">Deadline</label>
+                <input type="date" name="deadline" min="{% now 'Y-m-d' %}"
+                    class="w-full mt-1 p-3 rounded-lg bg-white/80 text-black 
+                           focus:outline-none focus:ring-2 focus:ring-yellow-400 
+                           transition duration-300">
+
+                {% if form.deadline.errors %}
+                <p class="text-red-400 text-sm mt-1">
+                    {{ form.deadline.errors.0 }}
+                </p>
+                {% endif %}
+            </div>
+
+            <!-- Button -->
+            <button
+                class="w-full bg-yellow-400 text-black font-bold py-3 rounded-lg 
+                       transition duration-300 hover:scale-105 hover:bg-yellow-500 hover:shadow-lg">
+                Create Goal
+            </button>
+
+        </form>
+
+        <!-- Back -->
+        <div class="text-center mt-5">
+            <a href="{% url 'home' %}"
+               class="text-indigo-400 hover:text-indigo-200 text-sm transition underline">
+                ← Back to Home
+            </a>
         </div>
 
-          <div>
-            <label for="target_amount" class="block text-gray-400  mb-2 font-bold">
-                Target Amount
-            </label>
-            <input type="number" name="target_amount" id="target_amount"  step="0.01" min="0.01"
-                class="appearance-none text-black w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-200 focus:ring-2 focus:ring-yellow-200"
-                placeholder="e.g., 5000.00" required>
-            {% if form.target_amount.errors %}
-            <p class="text-red-500 text-sm mt-1">
-                {{ form.target_amount.0 }}
-            </p>
-            {% endif %}
-        </div>
-          <div>
-            <label for="deadline" class="block text-gray-400  mb-2 font-bold">
-                Deadline
-            </label>
-            <input type="date" name="deadline" id="deadline"  step="0.01" min="{% now 'Y-m-d' %}"
-                class="appearance-none text-black w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-yellow-200 focus:ring-2 focus:ring-yellow-200" required>
-            {% if form.deadline.errors %}
-            <p class="text-red-500 text-sm mt-1">
-                {{ form.deadline.0 }}
-            </p>
-            {% endif %}
-        </div>
-
-        <button
-                    class="w-full text-white bg-yellow-300 mt-3  hover:bg-black font-bold py-3 rounded-lg transtion ease-out duration-[900ms]">Submit</button>
-            </form>
-            <div class="text-center mt-1">
-             <a href="{% url 'home' %}"
-                class="text-sm text-indigo-600 hover:text-indigo-400 hover:underline transition duration-150 ease-in-out">Back
-                to Home</a>
-                </div>
-        </div>
     </div>
- </div>
+</div>
  
 {% endblock content %}
 

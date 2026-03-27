@@ -9,6 +9,7 @@ from .admin import TransactionResource
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView,PasswordResetConfirmView
 from django.urls import reverse_lazy
+from django.shortcuts import redirect, get_object_or_404
 #Function Based View
 
 # def home(request):
@@ -143,6 +144,30 @@ class CustomPasswordResetConfirm(PasswordResetConfirmView):
     def form_valid(self, form):
         messages.success(self.request, "Password reset successfully done!")
         return super().form_valid(form)
+    
+#Clear  all the transaction list
+def clear_transactions(request):
+    if request.method == "POST":
+        Transaction.objects.all().delete()
+        messages.success(request, 'All Transaction deleted!')
+    return redirect('transaction_list')
+
+#Clear all Goals 
+def clear_goals(request):
+    if request.method == "POST":
+        Goals.objects.all().delete()
+        messages.success(request, "All Goals Cleared!")
+    return redirect('home')
+
+def delete_goal(request, id):
+    if request.method == "POST":
+        goal = get_object_or_404(Goals, id=id)
+        goal.delete()
+        messages.success(request, "Goal is deleted!")
+    return redirect('home')
+        
+
+
     
     
 

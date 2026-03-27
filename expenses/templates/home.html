@@ -2,52 +2,155 @@
 {% block title %}Home{% endblock title %}
 {% block content %}
 <div class="container mx-auto p-6">
-    <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-yellow-600">Welcome to Your Finance Tracker</h1>
-        <h1 class="text-2xl font-bold text-gray-700">{{request.user|capfirst}}</h1>
-        <p class="text-xl text-gray-700 mt-2">Track your income, expenses, and goals effectively.</p>
+    <div class="text-center mb-10 p-6 rounded-2xl bg-gradient-to-r from-yellow-100 via-white to-yellow-100 shadow-lg transition-all duration-500 hover:shadow-2xl hover:scale-[1.02]">
+
+    <h1 class="text-4xl font-extrabold bg-gradient-to-r from-yellow-500 via-orange-500 to-yellow-600 bg-clip-text text-transparent animate-pulse tracking-wide">
+        Welcome to Your Finance Tracker
+    </h1>
+
+    <h2 class="text-2xl font-bold text-gray-700 mt-3 transition duration-300 hover:text-indigo-500 hover:tracking-wider">
+        {{ request.user|capfirst }}
+    </h2>
+
+    <p class="text-lg text-gray-600 mt-3 transition duration-300 hover:text-gray-900 hover:scale-105">
+        Track your income, expenses, and goals effectively.
+    </p>
+
+</div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+    <!-- Total Income -->
+    <div class="group bg-gradient-to-br from-green-50 to-white p-6 rounded-2xl shadow-md 
+                transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
+        
+        <h2 class="text-lg font-semibold text-gray-700 group-hover:text-green-600 transition">
+            Total Income
+        </h2>
+
+        <p class="text-4xl font-extrabold text-green-500 mt-2 
+                  transition duration-300 group-hover:scale-110">
+            ₹{{ total_income|floatformat:2 }}
+        </p>
+
+        <div class="h-1 w-0 bg-green-500 mt-3 transition-all duration-500 group-hover:w-full"></div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-       <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold text-gray-800 ">Total Income</h2>
-        <p class="text-3xl font-bold text-green-500">₹{{total_income|floatformat:2}}</p>
-       </div>
+    <!--  Total Expense -->
+    <div class="group bg-gradient-to-br from-red-50 to-white p-6 rounded-2xl shadow-md 
+                transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
+        
+        <h2 class="text-lg font-semibold text-gray-700 group-hover:text-red-600 transition">
+            Total Expense
+        </h2>
 
-       <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold text-gray-800 ">Total Expense</h2>
-        <p class="text-3xl font-bold text-red-500">₹{{total_expenses|floatformat:2}}</p>
-       </div>
+        <p class="text-4xl font-extrabold text-red-500 mt-2 
+                  transition duration-300 group-hover:scale-110">
+            ₹{{ total_expenses|floatformat:2 }}
+        </p>
 
-       <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-semibold text-gray-800 ">Savings</h2>
-        <p class="text-3xl font-bold text-gray-500">₹{{net_saving|floatformat:2}}</p>
-       </div>
+        <div class="h-1 w-0 bg-red-500 mt-3 transition-all duration-500 group-hover:w-full"></div>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Your Goals</h2>
-        <ul class="space-y-4">
-            {% for item in goal_progress %}
-            <li class="flex justify-between items-center">
-                <div class="text-gray-800">
-                    <p class="font-semibold">{{ item.goal.name }}</p>
-                    <p class="text-sm text-gray-600">Target: ₹{{ item.goal.target_amount|floatformat:2 }}</p>
-                    <p class="text-sm text-gray-600">Deadline: {{ item.goal.deadline }}</p>
+    <!--  Savings -->
+    <div class="group bg-gradient-to-br from-gray-100 to-white p-6 rounded-2xl shadow-md 
+                transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
+        
+        <h2 class="text-lg font-semibold text-gray-700 group-hover:text-indigo-500 transition">
+            Savings
+        </h2>
+
+        <p class="text-4xl font-extrabold text-indigo-500 mt-2 
+                  transition duration-300 group-hover:scale-110">
+            ₹{{ net_saving|floatformat:2 }}
+        </p>
+
+        <div class="h-1 w-0 bg-indigo-500 mt-3 transition-all duration-500 group-hover:w-full"></div>
+    </div>
+
+</div>
+
+    <div class="flex justify-end mt-3 px-4">
+        <form method="POST" action="{% url 'clear_goals' %}">
+            {% csrf_token %}
+            <button type="submit"
+                class="px-3 py-1 text-xs font-medium text-white bg-red-500 rounded-md shadow hover:bg-black transition duration-200">
+                Clear All
+            </button>
+        </form>
+    </div>
+  <div class="bg-gradient-to-br from-white to-gray-50 p-6 rounded-2xl shadow-lg mb-10 mt-3 transition duration-500 hover:shadow-2xl">
+
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 tracking-wide">
+        Your Goals
+    </h2>
+
+    <ul class="space-y-5">
+        {% for item in goal_progress %}
+
+        <li class="bg-white p-5 rounded-xl shadow-sm transition-all duration-500 
+                   hover:shadow-xl hover:-translate-y-1 group">
+
+            <!-- Top Right Delete -->
+            <div class="flex justify-end">
+                <form method="POST" action="{% url 'delete_goal' item.goal.id %}">
+                    {% csrf_token %}
+                    <button type="submit"
+                        onclick="return confirm('Delete this goal?')"
+                        class="text-xs text-red-500 hover:text-white hover:bg-red-500 px-2 py-1 rounded transition duration-300">
+                        ✖
+                    </button>
+                </form>
+            </div>
+
+            <!-- Content -->
+            <div class="flex justify-between items-center mt-2">
+
+                <!-- LEFT -->
+                <div>
+                    <p class="font-semibold text-lg text-gray-800 group-hover:text-indigo-500 transition">
+                        {{ item.goal.name }}
+                    </p>
+
+                    <p class="text-sm text-gray-600">
+                        Target: ₹{{ item.goal.target_amount|floatformat:2 }}
+                    </p>
+
+                    <p class="text-sm text-gray-500">
+                        Deadline: {{ item.goal.deadline }}
+                    </p>
                 </div>
-                <div class="text-right">
-                    <p class="text-xl font-bold text-indigo-500">{{ item.progress|floatformat:2 }}%</p>
+
+                <!-- RIGHT Progress -->
+                <div class="w-44">
+                    <p class="text-right text-3xl font-extrabold text-indigo-500 
+                              transition duration-300 group-hover:scale-110">
+                        {{ item.progress|floatformat:2 }}%
+                    </p>
+
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-gray-200 rounded-full h-2 mt-2 overflow-hidden">
+                        <div class="bg-indigo-500 h-2 rounded-full 
+                                    transition-all duration-700 ease-out group-hover:bg-indigo-600"
+                             style="width: {{ item.progress }}%;">
+                        </div>
+                    </div>
                 </div>
-            </li>
-            <hr>
-            {% endfor %}
-        </ul>
-    </div>
+
+            </div>
+
+        </li>
+
+        {% endfor %}
+    </ul>
+
+</div>
 
     <div class="text-center">
-        <a href="{% url 'goals' %}" class="w-full text-white bg-yellow-500  hover:bg-black font-bold py-3 rounded-lg transtion ease-out duration-[900ms] px-2 ">Add new Goal</a>
+        <a href="{% url 'goals' %}"
+            class="w-full text-white bg-yellow-500  hover:bg-black font-bold py-3 rounded-lg transtion ease-out duration-[900ms] px-2 ">Add
+            new Goal</a>
     </div>
 
-   
+
 </div>
 {% endblock content %}

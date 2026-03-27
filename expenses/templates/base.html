@@ -9,24 +9,86 @@
 </head>
 
 <body class="bg-gray-100 text-white">
-    <nav class="bg-yellow-500 p-4 text-white">
+   <nav class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white shadow-md">
+
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+
+        <!-- Logo -->
+        <div class="font-bold text-lg">
+            Finance Tracker
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" class="sm:hidden text-2xl focus:outline-none">
+            ☰
+        </button>
+
+        <!-- Links -->
+        <div id="menu" class="hidden sm:flex space-x-6 items-center">
+
+            {% if user.is_authenticated %}
+
+            <a href="{% url 'home' %}" class="hover:underline hover:scale-105 transition">Home</a>
+            <a href="{% url 'transactions_add' %}" class="hover:underline hover:scale-105 transition">Add Transaction</a>
+            <a href="{% url 'goals' %}" class="hover:underline hover:scale-105 transition">Goals</a>
+            <a href="{% url 'transaction_list' %}" class="hover:underline hover:scale-105 transition">Transactions</a>
+
+            <!-- Logout -->
+            <form id="logout-form" action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="hover:text-black transition font-semibold">
+                    Logout
+                </button>
+            </form>
+
+            {% else %}
+
+            <a href="{% url 'login' %}" class="hover:underline transition">Login</a>
+            <a href="{% url 'register' %}" class="hover:underline transition">Register</a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden sm:hidden px-4 pb-4 space-y-3">
+
         {% if user.is_authenticated %}
-        <a class="font-semibold mx-10" href="{% url 'home' %}">Home</a>
-        <a class="font-semibold mx-4" href="{% url 'transactions_add' %}">Add Transaction</a>
-        <a class="font-semibold mx-4" href="{% url 'goals' %}">Feature Goals</a>
-        <a class="font-semibold mx-4" href="{% url 'transaction_list' %}">Transactions</a>
 
+        <a href="{% url 'home' %}" class="block hover:text-black transition">Home</a>
+        <a href="{% url 'transactions_add' %}" class="block hover:text-black transition">Add Transaction</a>
+        <a href="{% url 'goals' %}" class="block hover:text-black transition">Goals</a>
+        <a href="{% url 'transaction_list' %}" class="block hover:text-black transition">Transactions</a>
 
-        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: inline;">
+        <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
-            <a href="#" onclick="document.getElementById('logout-form').submit();" class="ml-2 font-semibold">Logout</a>
+            <button type="submit" class="block font-semibold hover:text-black">
+                Logout
+            </button>
         </form>
+
         {% else %}
-        <a href="{% url 'login' %}" class="ml-4 font-bold">Login</a>
-        <a href="{% url 'register' %}" class="ml-4 font-bold">Register</a>
+
+        <a href="{% url 'login' %}" class="block">Login</a>
+        <a href="{% url 'register' %}" class="block">Register</a>
+
         {% endif %}
 
-    </nav>
+    </div>
+
+</nav>
+
+<!-- JS for toggle -->
+<script>
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+
+    btn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+    });
+</script>
     {% block content %}
     {% endblock content %}
     {% if messages %}

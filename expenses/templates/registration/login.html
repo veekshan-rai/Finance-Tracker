@@ -2,57 +2,95 @@
 {% block title %}Login{% endblock title %}
 {% block content %}
 
-<div class="min-h-screen flex items-center justify-center bg-gray-200  py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8 bg-gray-500 p-8 rounded-xl shadow-[0_35px_35px_rgba(0,0,0,0.12)]">
+<div class="min-h-screen flex items-center justify-center 
+            bg-gradient-to-br from-gray-900 via-gray-800 to-black 
+            py-12 px-4 sm:px-6 lg:px-8">
+
+    <!-- Glass Card -->
+    <div class="max-w-md w-full space-y-8 
+                bg-white/10 backdrop-blur-lg 
+                p-8 rounded-2xl shadow-2xl 
+                border border-white/20
+                transition duration-500 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+
+        <!-- Header -->
         <div>
-            <h2 class="text-3xl font-bold text-yellow-400 text-center">Finance Tracker</h2>
-            <p class="mt-2 text-center text-gray-200 text-sm">Please sign in to your account</p>
+            <h2 class="text-4xl font-extrabold text-yellow-400 text-center tracking-wide animate-pulse">
+                Finance Tracker
+            </h2>
+            <p class="mt-2 text-center text-gray-300 text-sm">
+                Please sign in to your account
+            </p>
         </div>
+
+        <!-- Form -->
         <form class="space-y-5" method="post">
             {% csrf_token %}
+
+            <!-- Username -->
             <div>
-                <label for="id_username" class="block text-gray-400  mb-2 font-bold">
-                    UserName:
+                <label for="id_username" class="block text-gray-300 mb-2 font-semibold">
+                    Username
                 </label>
                 <input type="text" name="username" id="id_username"
-                    class="w-full text-gray-900 p-3 border rounded-lg focus:outline-none focus:ring-indigo-500"
+                    class="w-full p-3 rounded-lg bg-white/80 text-gray-900 
+                           focus:outline-none focus:ring-2 focus:ring-yellow-400 
+                           transition duration-300 focus:scale-[1.02]"
                     placeholder="Enter your Username" required>
             </div>
 
-
+            <!-- Password -->
             <div>
-                <label for="id_password" class="block text-gray-500  mb-2 font-bold">
+                <label for="id_password" class="block text-gray-300 mb-2 font-semibold">
+                    Password
                 </label>
                 <input type="password" name="password" id="id_password"
-                    class="w-full p-3 text-gray-900 border rounded-lg focus:outline-none focus:ring-indigo-500"
+                    class="w-full p-3 rounded-lg bg-white/80 text-gray-900 
+                           focus:outline-none focus:ring-2 focus:ring-yellow-400 
+                           transition duration-300 focus:scale-[1.02]"
                     placeholder="Enter your Password" required>
             </div>
 
+            <!-- Errors -->
             {% if form.non_field_errors %}
-            <div class="text-red-400 text-sm">
+            <div class="text-red-400 text-sm text-center">
                 {% for error in form.non_field_errors %}
                 <p>{{ error }}</p>
                 {% endfor %}
             </div>
             {% endif %}
 
+            <!-- Button -->
             <div class="text-center mt-4">
-                <button class="w-full text-white bg-yellow-300  
-                    hover:bg-black font-bold py-3 rounded-lg transtion ease-out duration-[900ms]">Sign in</button>
+                <button class="w-full text-black bg-yellow-400 
+                               hover:bg-yellow-500 
+                               font-bold py-3 rounded-lg 
+                               transition duration-300 
+                               hover:scale-105 hover:shadow-lg">
+                    Sign in
+                </button>
             </div>
 
         </form>
-        <div class="text-center ">
-            <p class="text-medium text-yellow-300">Don't have an account?
-            <a href="{% url 'register' %}"
-                class="text-sm text-black hover:text-indigo-600 transition duration-150 ease-in-out hover:underline ">Register Here</a>
-              </p>
 
-              <p class="text-medium text-yellow-300"> 
-                <a href="{% url 'password_reset' %}" class="text-medium font-semibold text-indigo-800 hover:text-indigo-300 transtion duretion-150 ease-in-out">Forget Password</a>
+        <!-- Footer Links -->
+        <div class="text-center space-y-2">
+            <p class="text-gray-300 text-sm">
+                Don't have an account?
+                <a href="{% url 'register' %}"
+                   class="text-yellow-400 hover:text-white transition underline">
+                   Register
+                </a>
+            </p>
 
-              </p>
+            <p>
+                <a href="{% url 'password_reset' %}"
+                   class="text-indigo-400 hover:text-indigo-200 text-sm transition">
+                   Forgot Password?
+                </a>
+            </p>
         </div>
+
     </div>
 </div>
 {% endblock content %}

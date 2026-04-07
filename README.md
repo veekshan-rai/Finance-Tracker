@@ -20,7 +20,7 @@ A full-stack finance tracking web application built with Django. <br>The system 
 <hr>
 <h4>Installation</h4>
 <h5>Clone the repository</h5>
-git clone https://github.com/veekshan-rai/Finance-Tracker.git
+git clone https://github.com/veekshan-rai/Finance-Tracker.git <br>
 cd Finance-Tracker
 <hr>
 <h4>Create a virtual environment</h4>
